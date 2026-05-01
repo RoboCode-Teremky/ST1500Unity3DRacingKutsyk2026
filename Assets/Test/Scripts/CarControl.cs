@@ -1,34 +1,37 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CarControl : MonoBehaviour
+namespace Test
 {
-    [SerializeField] float maxSpeed = 1.0f;
-    [SerializeField] float maxSteerAngle = 45.0f;
-    Vector2 direction;
-    [SerializeField] WheelCollider[] frontWheels = new WheelCollider[2];
-    [SerializeField] WheelCollider[] backWheels = new WheelCollider[2];
-
-    public void OnMove(InputAction.CallbackContext callbackContext)
+    public class CarControl : MonoBehaviour
     {
-        direction = callbackContext.ReadValue<Vector2>();
-    }
+        [SerializeField] float maxSpeed = 1.0f;
+        [SerializeField] float maxSteerAngle = 45.0f;
+        Vector2 direction;
+        [SerializeField] WheelCollider[] frontWheels = new WheelCollider[2];
+        [SerializeField] WheelCollider[] backWheels = new WheelCollider[2];
 
-    void Start()
-    {
-
-    }
-
-    void FixedUpdate()
-    {
-        foreach (WheelCollider frontWheel in frontWheels)
+        public void OnMove(InputAction.CallbackContext callbackContext)
         {
-            frontWheel.motorTorque = direction.y * maxSpeed;
-            frontWheel.steerAngle = direction.x * maxSteerAngle;
+            direction = callbackContext.ReadValue<Vector2>();
         }
-        foreach (WheelCollider backWheel in backWheels)
+
+        void Start()
         {
-            backWheel.motorTorque = direction.y * maxSpeed;
+
+        }
+
+        void FixedUpdate()
+        {
+            foreach (WheelCollider frontWheel in frontWheels)
+            {
+                frontWheel.motorTorque = direction.y * maxSpeed;
+                frontWheel.steerAngle = direction.x * maxSteerAngle;
+            }
+            foreach (WheelCollider backWheel in backWheels)
+            {
+                backWheel.motorTorque = direction.y * maxSpeed;
+            }
         }
     }
 }
