@@ -1,17 +1,21 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 namespace Test
 {
     public class CarControl : MonoBehaviour
     {
         [SerializeField] float maxSpeed = 1.0f;
+        [SerializeField] float nitroSpeed = 1.0f;
         [SerializeField] float maxSteerAngle = 45.0f;
         Vector2 direction;
         [SerializeField] WheelCollider[] frontWheels = new WheelCollider[2];
         [SerializeField] WheelCollider[] backWheels = new WheelCollider[2];
+        [SerializeField] TMP_Text speedometer;
         [SerializeField] ParticleSystem[] particleSystems;
         Rigidbody rigidbody;
+        NitroManager nitroManager;
         public void OnMove(InputAction.CallbackContext callbackContext)
         {
             direction = callbackContext.ReadValue<Vector2>();
@@ -28,19 +32,25 @@ namespace Test
         void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
+            nitroManager = GetComponent<NitroManager>();
         }
 
         void FixedUpdate()
         {
             foreach (WheelCollider frontWheel in frontWheels)
             {
-                frontWheel.motorTorque = direction.y * maxSpeed;
+                frontWheel.motorTorque = direction.y * maxSpeed + (nitroManager.nitroActive?nitroSpeed:0.0f);
                 frontWheel.steerAngle = direction.x * maxSteerAngle;
             }
             foreach (WheelCollider backWheel in backWheels)
             {
-                backWheel.motorTorque = direction.y * maxSpeed;
+                backWheel.motorTorque = direction.y * maxSpeed + (nitroManager.nitroActive?nitroSpeed:0.0f);
             }
+        }
+
+        void Update()
+        {
+            speedometer.text = $"Speed: {rigidbody.linearVelocity.magnitude:F0}";
         }
     }
 }
