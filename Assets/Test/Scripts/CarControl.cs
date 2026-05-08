@@ -10,15 +10,24 @@ namespace Test
         Vector2 direction;
         [SerializeField] WheelCollider[] frontWheels = new WheelCollider[2];
         [SerializeField] WheelCollider[] backWheels = new WheelCollider[2];
-
+        [SerializeField] ParticleSystem[] particleSystems;
+        Rigidbody rigidbody;
         public void OnMove(InputAction.CallbackContext callbackContext)
         {
             direction = callbackContext.ReadValue<Vector2>();
+            Vector3 localSpeed=transform.worldToLocalMatrix * rigidbody.linearVelocity;
+            if(Mathf.Sign(direction.y) != Mathf.Sign(localSpeed.z))
+            {
+                foreach(ParticleSystem ps in particleSystems)
+                {
+                    ps.Play();
+                }
+            }
         }
 
         void Start()
         {
-
+            rigidbody = GetComponent<Rigidbody>();
         }
 
         void FixedUpdate()
