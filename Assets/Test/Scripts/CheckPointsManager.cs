@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 namespace Test
@@ -8,6 +9,7 @@ namespace Test
         [SerializeField] TMP_Text checkPointsLabel;
         int allCheckPoints;
         int currentPassedCheckPoints = 0;
+        public UnityEvent finish = new UnityEvent();
         void Start()
         {
             CheckPoint[] checkPoints = FindObjectsByType<CheckPoint>(FindObjectsSortMode.None);
@@ -23,6 +25,7 @@ namespace Test
         {
             currentPassedCheckPoints++;
             checkPointsLabel.text = $"{currentPassedCheckPoints}/{allCheckPoints}";
+            if(currentPassedCheckPoints == allCheckPoints) finish.Invoke();
         }
     }
 }
