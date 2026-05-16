@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7685424793475889185}
   - component: {fileID: 8493467844264526841}
   m_Layer: 0
-  m_Name: TestCheckPoint (1)
+  m_Name: TestCheckPoint
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
